@@ -1,0 +1,34 @@
+{% macro serverless_function(
+  jar_file,
+  base_route,
+  operation_id,
+  base_package,  
+  env_vars,
+  api, 
+  path, 
+  method,
+  timeout=90, 
+  memory_size=128
+  ) 
+%}
+  {{ operation_id }}Lambda:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: {{ jar_file }}
+      Handler: {{ base_package }}.handlers.{{base_route}}.{{ operation_id }}Lambda::handleRequest
+      Runtime: java11
+      Environment:
+        Variables:
+        {%- for var in env_vars %} 
+          {{var}} : "" 
+        {%- endfor %}
+      Timeout: {{ timeout }}
+      MemorySize: {{ memory_size }}
+      Events:
+        {{ operation_id }}:
+          Type: Api 
+          Properties:
+            RestApiId: !Ref {{ api }}
+            Path: {{ path }}
+            Method: {{ method }}
+{% endmacro -%}

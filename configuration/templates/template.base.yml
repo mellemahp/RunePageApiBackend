@@ -1,0 +1,25 @@
+{%- from "configuration/macros/serverless_function.jinja" import serverless_function %}
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Cloudformation template for api gateway serverless REST api
+
+Resources:
+  RunePageApi:
+    Type: AWS::Serverless::Api
+    Properties:
+      StageName: Prod
+      DefinitionBody: {{ open_api_definition }}
+
+  {%- for lambda in lambda_list %}
+  {{ serverless_function(
+      jar_file=lambda['operationId'] + "Lambda_deploy.jar",
+      operation_id=lambda['operationId'],
+      base_route=lambda['base_route'],
+      base_package="com.hmellema.league",  
+      env_vars=[],
+      api="RunePageApi", 
+      path=lambda['path'], 
+      method=lambda['method'],
+    ) 
+  }}
+  {% endfor %}
