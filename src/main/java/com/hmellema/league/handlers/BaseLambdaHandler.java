@@ -8,19 +8,22 @@ import com.hmellema.league.dagger.DaggerBaseComponent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import java.lang.reflect.Type;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.io.IOException;
 
 public abstract class BaseLambdaHandler<InputType, OutputType>
   implements RequestHandler<APIGatewayProxyRequestEvent, APIGatewayProxyResponseEvent> {
   protected LambdaLogger logger;
   protected final BaseComponent baseComponent;
   protected final Gson objectMapper;
+  protected final Class<InputType> inputTypeClass;
 
-  protected BaseLambdaHandler() {
+  protected BaseLambdaHandler(Class<InputType> inputTypeClass) {
     objectMapper = new Gson();
+    this.inputTypeClass = inputTypeClass;
     baseComponent = DaggerBaseComponent.builder().build();
   }
 
@@ -69,8 +72,13 @@ public abstract class BaseLambdaHandler<InputType, OutputType>
 
     return inputMap;
   }
+  // see https://stackoverflow.com/questions/14139437/java-type-generic-as-argument-for-gson
+  protected InputType convertToInputType(Map<String, String> inputMap) {
+    String jsonString = objectMapper.toJson(inputMap);
+    Type inputTypeToken = TypeToken.getParameterized(inputTypeClass).getType();
 
-  protected abstract InputType convertToInputType(Map<String, String> inputMap);
+    return objectMapper.fromJson(jsonString, inputTypeToken);
+  }
 
   protected abstract OutputType handler(
     InputType request,

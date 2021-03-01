@@ -15,7 +15,7 @@ public class GetRunePageLambda
   extends BaseLambdaHandler<GetRunePageInput, GetRunePageOutput> {
 
   public GetRunePageLambda() {
-    super();
+    super(GetRunePageInput.class);
     baseComponent.inject(this);
   }
 
@@ -32,11 +32,5 @@ public class GetRunePageLambda
           .type(RuneType.PRECISION)
           .effect("BORKS UP THE ENEMY")
       ));
-  }
-
-  @Override
-  protected GetRunePageInput convertToInputType(Map<String, String> inputMap) {
-    String jsonString = objectMapper.toJson(inputMap);
-    return objectMapper.fromJson(jsonString, GetRunePageInput.class);
   }
 }
