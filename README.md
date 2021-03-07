@@ -1,2 +1,1 @@
-# RunePageApiBackend
-Test backend for League Runepage API (note: not intended to be fully functional, just a skeleton)
+/home/huntermellema/Dropbox/projects/repos/lol_rest_api/RunePageApiBackend/README.md
