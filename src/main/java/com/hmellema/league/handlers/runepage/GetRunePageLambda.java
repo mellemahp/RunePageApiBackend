@@ -1,22 +1,23 @@
 package com.hmellema.league.handlers.runepage;
 
 import com.amazonaws.services.lambda.runtime.Context;
-import com.hmellema.league.handlers.BaseLambdaHandler;
+import com.hmellema.lambdatools.handlers.services.ApiGatewayRestHandler;
 import com.hmellema.league.model.GetRunePageInput;
 import com.hmellema.league.model.GetRunePageOutput;
 import com.hmellema.league.model.Rune;
 import com.hmellema.league.model.RuneType;
-import java.util.Map;
-import java.io.IOException;
+
+import com.hmellema.league.dagger.DaggerBaseComponent;
+
 import com.google.common.collect.ImmutableList;
 import java.math.BigDecimal;
 
 public class GetRunePageLambda 
-  extends BaseLambdaHandler<GetRunePageInput, GetRunePageOutput> {
+  extends ApiGatewayRestHandler<GetRunePageInput, GetRunePageOutput> {
 
   public GetRunePageLambda() {
     super(GetRunePageInput.class);
-    baseComponent.inject(this);
+    DaggerBaseComponent.builder().build().inject(this);
   }
 
   @Override
@@ -24,6 +25,7 @@ public class GetRunePageLambda
     GetRunePageInput request,
     Context context
   ) {
+    log.info("{}", "SOME STUFF");
     return new GetRunePageOutput()
       .name(request.getChampionName())
       .juliOmeter(new BigDecimal(1000))

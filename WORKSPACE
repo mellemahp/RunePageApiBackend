@@ -7,6 +7,14 @@ git_repository(
     branch="main"
 )
 
+git_repository(
+    name="lambda_tools", 
+    remote="https://github.com/mellemahp/LambdaTools",
+    branch="main"
+)
+
+
+
 # import libraries from maven
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
@@ -35,7 +43,9 @@ maven_install(
         # aws lambda dependencies
         "com.amazonaws:aws-lambda-java-core:1.2.1",
         "com.amazonaws:aws-lambda-java-events:3.7.0",
-        "com.amazonaws:aws-lambda-java-log4j2:1.2.0",
+        # logging dependencies
+        "org.jlib:jlib-awslambda-logback:1.0.0",
+        "org.slf4j:slf4j-api:1.8.0-beta4",
         # test deps
         "org.mockito:mockito-all:1.10.19",
         "junit:junit:4.12",

@@ -1,17 +1,19 @@
 package com.hmellema.league.handlers.itemset;
 
 import com.amazonaws.services.lambda.runtime.Context;
-import com.hmellema.league.handlers.BaseLambdaHandler;
+import com.hmellema.lambdatools.handlers.services.ApiGatewayRestHandler;
+
+import com.hmellema.league.dagger.DaggerBaseComponent;
 
 import com.hmellema.league.model.GetItemSetOutput;
 import com.hmellema.league.model.GetItemSetInput;
 
 public class GetItemSetLambda 
-  extends BaseLambdaHandler<GetItemSetInput, GetItemSetOutput> {
+  extends ApiGatewayRestHandler<GetItemSetInput, GetItemSetOutput> {
 
   public GetItemSetLambda() {
     super(GetItemSetInput.class);
-    baseComponent.inject(this);
+    DaggerBaseComponent.builder().build().inject(this);
   }
 
   @Override

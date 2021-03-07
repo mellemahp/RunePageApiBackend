@@ -4,7 +4,7 @@ java_plugin(
     processor_class = "dagger.internal.codegen.ComponentProcessor",
     deps = [
         "@maven//:com_google_dagger_dagger_compiler",
-    ],
+    ]
 )
 
 java_library(
@@ -23,12 +23,15 @@ java_binary(
     main_class = "com.hmellema.league.handlers.itemset.GetItemSetLambda",
     deps = [
         ":dagger_lib",
-        "@api_model//:smithy-model-java-full",
-        "@maven//:com_amazonaws_aws_lambda_java_core",
-        "@maven//:com_amazonaws_aws_lambda_java_events",
-        "@maven//:com_amazonaws_aws_lambda_java_log4j2",
-        "@maven//:com_google_code_gson_gson",
-        "@maven//:com_google_guava_guava"
+        "@api_model//:smithy-model-java-slim",
+        "@lambda_tools//:api_gateway_handler",
+        "@maven//:com_google_guava_guava",
+    ],
+    classpath_resources = [
+        "@lambda_tools//:logging_config"
+    ],
+    runtime_deps = [
+        "@lambda_tools//:runtime_logging_deps"
     ]
 )
 
@@ -38,12 +41,15 @@ java_binary(
     main_class = "com.hmellema.league.handlers.runepage.GetRunePageLambda",
     deps = [
         ":dagger_lib",
-        "@api_model//:smithy-model-java-full",
-        "@maven//:com_amazonaws_aws_lambda_java_core",
-        "@maven//:com_amazonaws_aws_lambda_java_events",
-        "@maven//:com_amazonaws_aws_lambda_java_log4j2",
-        "@maven//:com_google_code_gson_gson",
-        "@maven//:com_google_guava_guava"
+        "@api_model//:smithy-model-java-slim",
+        "@lambda_tools//:api_gateway_handler",
+        "@maven//:com_google_guava_guava",
+    ],
+    resources = [
+        "@lambda_tools//:logging_config"
+    ],
+    runtime_deps = [
+        "@lambda_tools//:runtime_logging_deps",
     ]
 )
 
